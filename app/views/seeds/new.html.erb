@@ -1,0 +1,30 @@
+new.html.erb
+
+<div>
+    <h1> Hello </h1>
+</div>
+
+#  write ruby in this file with these, keep to single line
+
+<%= 5 + 5 %>
+
+<div class="Seed">
+    <h2>Click the button to seed a project</h2>
+
+    <h2>Items to Create</h2>
+
+    <form method="POST" action="/seeds">
+        <div class="items">
+            <div class="vendor">
+                <h3>Vendor</h3>
+
+                <input name="vendor_name" type="text" />
+            </div>
+        </div>
+
+        <input type="submit" />
+    </form>
+</div>
+
+
+#look into rails helpers .erb things "form builder", no new gems
