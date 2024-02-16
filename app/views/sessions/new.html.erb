@@ -1,0 +1,12 @@
+<div>
+    <h1> Login Page </h1>
+    <%= form_with(url: "/sessions") do |form| %>
+        <%= form.label :address, "email" %>
+        <%= form.email_field :address %><br>
+        <%= form.password_field :password %>
+        <%= form.submit "Submit" %>
+    <% end %>
+</div>
+
+
+https://guides.rubyonrails.org/form_helpers.html
