@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   get "sessions" => "sessions#new"
   post "sessions" => "sessions#create"
+  post "seeds/math" => "seeds#math"
 
   # Defines the root path route ("/")
   root "seeds#new" #where default goes to

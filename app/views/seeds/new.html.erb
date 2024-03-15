@@ -2,6 +2,15 @@
     <h1> Procore Project Seeder </h1>
 </div>
 
+<div>
+    <h2> Company Number </h2>
+    <%= @company %>
+    <form method="POST" action="/seeds/math">
+        <input name="number" type="number" />
+        <input type="submit" />
+    </form>
+    <%= @result %>
+</div>
 
 <div class="Seed">
     <h2>Click 'Submit' to seed a project</h2>

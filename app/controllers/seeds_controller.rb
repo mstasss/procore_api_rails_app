@@ -1,10 +1,18 @@
+
 class SeedsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   # Company ID of sandbox company
   SANDBOX_COMPANY_ID = 4264590
   def new
+   @company = SANDBOX_COMPANY_ID
+  end
 
+  def math
+    # debugger
+    num = params[:number]
+    @result = num.to_i * 2
+    render :new
   end
 
   def create
