@@ -9,9 +9,11 @@ class HttpClient
 
   def get(url, query_params={})
     uri = URI.parse(url)
-    query_params = query_params.reject(&:blank?)
-    uri.query = URI.encode_www_form(query_params) unless query_params.blank?
 
+    uri.query = URI.encode_www_form(query_params) unless query_params.blank?
+    puts uri
+    puts headers
+    puts query_params
     handle_request_errors do
       HTTP.get(uri, headers: headers)
     end

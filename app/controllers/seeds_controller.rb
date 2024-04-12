@@ -10,9 +10,14 @@ class SeedsController < ApplicationController
 
   def math
     # debugger
-    num = params[:number]
-    @result = num.to_i * 2
+    # num = params[:number]
+    # @result = num.to_i * 2
+    # render :new
+    @name = params[:name]
+    client = Procore::ApiClient.new
+    response = client.create_vendor(@name)
     render :new
+    puts "new vendor created: #{response}"
   end
 
   def create
@@ -22,6 +27,11 @@ class SeedsController < ApplicationController
     # else
     #   puts 'failure'
     # end
+  end
+
+  def list_vendors
+    Procore::ApiClient
+
   end
 
   def createa

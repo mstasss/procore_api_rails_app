@@ -24,5 +24,6 @@ Things you may want to cover:
 - ...
 
 'rails s' to start
+'rails c' to start console mode (Not localhost)
 
 http://localhost:3000/seeds/new

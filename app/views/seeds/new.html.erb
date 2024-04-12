@@ -3,42 +3,11 @@
 </div>
 
 <div>
-    <h2> Company Number </h2>
-    <%= @company %>
+    <h2> Enter New Vendor Name </h2>
     <form method="POST" action="/seeds/math">
-        <input name="number" type="number" />
+        <input name="name" type="text" placeholder="enter name" />
         <input type="submit" />
     </form>
-    <%= @result %>
+    <%=  "New vendor successfully created:  " + @name.to_s if @name !=nil %>
 </div>
 
-<div class="Seed">
-    <h2>Click 'Submit' to seed a project</h2>
-
-    <h2> Procore Company </h2>
-    <input companyID="Company ID" value="Enter your company ID" type="text"/> <br>
-    <h2>Items to Create</h2>
-
-    <form method="POST" action="/seeds">
-        <div class="items">
-            <div class="vendor">
-                <h3>Vendor</h3>
-                <h4> Vendor Name</h4>
-                <input name="vendor_name" type="text" /><br>
-                <h5> Use random name? </h5>
-                <input type="radio">
-                <h4>Vendor Address (optional) </h4>
-                <input address="vendor_address" type="text" />
-            </div>
-            <div class="purchase orderr">
-            <h3>Purchase Order</h3>
-
-            <input name="purchase_order" type="text" />
-        </div>
-        </div>
-        <input type="submit" />
-    </form>
-</div>
-
-
-#look into rails helpers .erb things "form builder", no new gems

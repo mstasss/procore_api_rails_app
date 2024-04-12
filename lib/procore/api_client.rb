@@ -1,8 +1,13 @@
 module Procore
   class ApiClient
     # Service Account Credentials
-    SA_CLIENT_ID = ENV['SA_CLIENT_ID']
-    SA_CLIENT_SECRET = ENV['SA_CLIENT_SECRET']
+    # SA_CLIENT_ID = ENV['SA_CLIENT_ID']
+    # SA_CLIENT_SECRET = ENV['SA_CLIENT_SECRET']
+    SA_CLIENT_ID="672393d553d917cd401af97d43bfb34ac356575aed2ff99d5eb2017319f81a2b"
+    SA_CLIENT_SECRET="7d74b89d4fab3ad5e919985409cf63441ce72b3acf9730bca0a513f0aef75654"
+    COMPANY_ID=4264590
+
+    attr_reader :company_id
 
     # OAuth URL
     OAUTH_URL = 'https://sandbox.procore.com/oauth/token'
@@ -10,7 +15,7 @@ module Procore
     BASE_API_URL = 'https://sandbox.procore.com/rest/'
     DEFAULT_API_VERSION = 'v1.0'
 
-    def initialize(company_id)
+    def initialize(company_id=COMPANY_ID)
       @company_id = company_id
     end
 
@@ -19,11 +24,12 @@ module Procore
     end
 
     def list_vendors
-      list('vendors')
+      list('vendors',{company_id: company_id})
     end
 
+
     def create_vendor(name)
-      create('vendors', { name: name })
+      create('vendors', { name: name, company_id: company_id })
     end
 
     # Commitments (purchase order)
