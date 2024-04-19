@@ -2,6 +2,7 @@
 class SeedsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+
   # Company ID of sandbox company
   SANDBOX_COMPANY_ID = 4264590
   def new
@@ -18,6 +19,7 @@ class SeedsController < ApplicationController
     response = client.create_vendor(@name)
     render :new
     puts "new vendor created: #{response}"
+    Vendor.create(name: response["name"])
   end
 
   def create
