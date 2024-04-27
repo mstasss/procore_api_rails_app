@@ -1,11 +1,35 @@
 <div>
     <h1> Procore Project Seeder </h1>
+    <br>
 </div>
 
 <div>
-    <h2> Enter New Vendor Name </h2>
+    <h2> Authentication Info </h2>
+    <input name="Client ID" type="text" placeholder="Client ID" /><br>
+    <input name="Client Secret" type="text" placeholder="Client Secret" /><br>
+    <input name="Company ID" type="text" placeholder="Company ID" /><br>
+    <input name="Project ID" type="text" placeholder="Project ID" />
+</div>
+
+<div>
+    <h2> Create New Vendor  </h2>
     <form method="POST" action="/seeds/math">
-        <input name="name" type="text" placeholder="enter name" />
+        <input name="name" type="text" placeholder="enter vendor name" />
+        <br>
+        <br>
+        <input type="submit" />
+    </form>
+    <%=  "New vendor successfully created:  " + @name.to_s if @name !=nil %>
+</div>
+
+
+<div>
+    <h2> Create Purchase Order </h2>
+    <form method="POST" action="/seeds/math">
+        <h3> Amount </h3>
+        <input name="name" type="text" placeholder="amount" />
+        <br>
+        <br>
         <input type="submit" />
     </form>
     <%=  "New vendor successfully created:  " + @name.to_s if @name !=nil %>
