@@ -18,7 +18,8 @@ class SeedsController < ApplicationController
     client = Procore::ApiClient.new
     response = client.create_vendor(@name)
     render :new
-    puts "new vendor created: #{response}"
+    puts "invalid credentials"
+    # puts "new vendor created: #{response}"
     Vendor.create(name: response["name"])
   end
 
