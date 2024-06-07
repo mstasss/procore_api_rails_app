@@ -56,7 +56,6 @@ class HttpClient
   def access_token
     @access_token ||= begin
       response = HTTP.post(@auth_url, json: @auth_params)
-
       JSON.parse(response.body)['access_token']
     end
   end

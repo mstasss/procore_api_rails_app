@@ -3,6 +3,10 @@
     <br>
 </div>
 
+
+ <a href="/vendors"> All Vendors </a>
+
+
 <div>
     <h2> Authentication Info </h2>
     <input name="Client ID" type="text" placeholder="Client ID" /><br>
@@ -13,7 +17,7 @@
 
 <div>
     <h2> Create New Vendor  </h2>
-    <form method="POST" action="/seeds/math">
+    <form method="POST" action="/vendors">
         <input name="name" type="text" placeholder="enter vendor name" />
         <br>
         <br>
@@ -27,8 +31,20 @@
 <div>
     <h2> Create Purchase Order </h2>
     <form method="POST" action="/seeds/math">
+        <h3> Project ID </h3>
+            <input name="ID" type="text" placeholder="ID #" />
+        <h3>Vendor </h3>
+        <select name="Vendor Name" id="vendor-select">
+            <option value="">--Please choose an option--</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="hamster">Hamster</option>
+            <option value="parrot">Parrot</option>
+            <option value="spider">Spider</option>
+            <option value="goldfish">Goldfish</option>
+        </select>
         <h3> Amount </h3>
-        <input name="name" type="text" placeholder="amount" />
+            <input name="Amount" placeholder="Amount" />
         <br>
         <br>
         <input type="submit" />

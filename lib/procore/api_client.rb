@@ -24,7 +24,7 @@ module Procore
     end
 
     def list_vendors
-      list('vendors',{company_id: company_id})
+      list('vendors',company_id: company_id)
     end
 
 
@@ -34,9 +34,9 @@ module Procore
 
     # Commitments (purchase order)
     # DEPRECATED https://developers.procore.com/reference/rest/v1/commitments?version=1.0
-    # /work_order_contracts or /purchase_order_contracts can be used as a replacement
+    # /work_order_contracts or /purchase_order can be used as a replacement
     def list_commitments
-      raise 'Deprecated - use /work_order_contracts or /purchase_order_contracts instead'
+      raise 'Deprecated - use /work_order_contracts or /purchase_order instead'
     end
 
     # Work Order Contracts
@@ -48,30 +48,51 @@ module Procore
 
     # Purchase Order Contracts
     # https://developers.procore.com/reference/rest/v1/purchase-order-contracts?version=1.0
-    # GET /rest/v1.0/purchase_order_contracts
-    def list_purchase_order_contracts
-      list('purchase_order_contracts')
+    # GET /rest/v1.0/purchase_order
+    def list_purchase_order(project_id)
+      list('purchase_order_contracts', project_id: project_id)
     end
 
-    # project_id
-    # title
-    # origin code
-    def create_purchase_order_contract(
-      project_id:,
-      title:
-    )
-      create('purchase_order_contracts', { project_id: project_id, title: title })
+    # def list(endpoint, **query_params)
+    #   url = build_url(endpoint)
+    #   http_client.get(url, query_params)
+    # end
+
+    #PROJECT ID: 117418
+    #VENDOR ID: 2651489
+    #
+    #
+
+    def list_cost_codes(project_id=117418)
+      list('cost_codes',project_id: project_id)
     end
+    # origin code
+    def create_purchase_order(title,amount,cost_code_id=6112963, project_id=117418, vendor_id=2651489)
+      response = create('purchase_order_contracts', project_id: project_id, company_id: company_id,
+        purchase_order_contract: {
+          vendor_id: vendor_id,
+          title: title
+        }
+      )
+      po_id = response["id"]
+      create_purchase_order_contract_line_item(amount,cost_code_id,po_id,project_id)
+    end
+
+    #ΤΟ ADD: line items/cost codes, title
 
     # Purchase Order Contract Line Items
     # https://developers.procore.com/reference/rest/v1/purchase-order-contract-line-items?version=1.0#create-purchase-order-contract-line-item
-    # POST /rest/v1.0/purchase_order_contracts/{purchase_order_contract_id}/line_items
-    def create_purchase_order_contract_line_item(project_id:, po_id:, dollar_amount:, cost_code_id:)
-      create("purchase_order_contracts/#{po_id}/line_items", {
+    # POST /rest/v1.0/purchase_order/{purchase_order_contract_id}/line_items
+
+    def create_purchase_order_contract_line_item (amount,cost_code_id,po_id,project_id)
+      create(
+        "purchase_order_contracts/#{po_id}/line_items",
         project_id: project_id,
-        dollar_amount: dollar_amount,
-        cost_code_id: cost_code_id
-      })
+        line_item: {
+          amount: amount,
+          cost_code_id: cost_code_id
+        }
+      )
     end
 
     # Commitment Change Orders

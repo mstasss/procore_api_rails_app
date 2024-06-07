@@ -10,10 +10,6 @@ class SeedsController < ApplicationController
   end
 
   def math
-    # debugger
-    # num = params[:number]
-    # @result = num.to_i * 2
-    # render :new
     @name = params[:name]
     client = Procore::ApiClient.new
     response = client.create_vendor(@name)
