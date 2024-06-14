@@ -19,6 +19,26 @@ class SeedsController < ApplicationController
     Vendor.create(name: response["name"])
   end
 
+  def submit_form
+    @name = params[:name]
+    @project_id = params[:project_id]
+    @vendor = params[:vendor]
+    @amount = params[:amount]
+
+    raise StandardError
+  rescue
+    flash[:error]= "you got an error!"
+    render :new
+
+    # client = Procore::ApiClient.new
+    # if @name
+    #   response = client.create_vendor(@name)
+    #   Vendor.create(name: response["name"])
+    # end
+
+    #if this field was filled out, do this
+  end
+
   def create
     render "/seeds/new"
     # if success

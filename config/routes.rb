@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "sessions" => "sessions#new"
   post "sessions" => "sessions#create"
   post "seeds/math" => "seeds#math"
+  post "seeds/submit_form" => "seeds#submit_form"
 
   # Defines the root path route ("/")
   root "seeds#new" #where default goes to
