@@ -6,33 +6,26 @@
 
  <a href="/vendors"> View All Vendors </a>
 
-
+:vendor_name, :project_id, :po_vendor, :po_line_amount
  <div>
-    <h2> Create New Vendor/Company </h2>
+    <h3> Create New Vendor/Company </h3>
     <h3> Create Vendor </h3>
     <%= form_with url: "/seeds/submit_form", method: :post do |form| %>
-        <%= form.radio_button :make_vendor, "Create Purchase Order"%>
+        <%= form.check_box :make_vendor%>
         <%= form.label :make_vendor_yes, "Create New Vendor" %>
-            <input name="name" type="text" placeholder="enter vendor name" />
+            <input name="vendor_name" type="text" placeholder="enter vendor name" />
             <br>
             <br>
-        <%= form.radio_button :make_po, "Create Purchase Order"%>
+        <%= form.check_box :make_po%>
         <%= form.label :make_po_yes, "Create Purchase Order" %>
-        <h2> Create Purchase Order </h2>
+        <h3> Create Purchase Order </h3>
         <h3> Project ID </h3>
-            <input name="ID" type="text" placeholder="ID #" />
-        <h3>Company </h3>
-        <select name="Vendor Name" id="vendor-select">
-            <option value="">--Please choose an option--</option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-            <option value="hamster">Hamster</option>
-            <option value="parrot">Parrot</option>
-            <option value="spider">Spider</option>
-            <option value="goldfish">Goldfish</option>
+            <input name="project_id" type="text" placeholder="ID #" />
+        <h3>Purchase Order Vendor </h3>
+        <input name="po_vendor" type="text" placeholder="Vendor Name" />
         </select>
         <h3> Amount </h3>
-            <input name="Amount" placeholder="Amount" />
+            <input name="po_line_amount" placeholder="Amount" />
         <br>
         <br>
         <input type="submit" />

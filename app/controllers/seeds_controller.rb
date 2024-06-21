@@ -9,26 +9,14 @@ class SeedsController < ApplicationController
    @company = SANDBOX_COMPANY_ID
   end
 
-  def math
-    @name = params[:name]
-    client = Procore::ApiClient.new
-    response = client.create_vendor(@name)
-    render :new
-    puts "invalid credentials"
-    # puts "new vendor created: #{response}"
-    Vendor.create(name: response["name"])
-  end
-
   def submit_form
-    @name = params[:name]
-    @project_id = params[:project_id]
-    @vendor = params[:vendor]
-    @amount = params[:amount]
+    # @vendor= params[:vendor] #create vendor name (Company level)
+    # @project_id = params[:project_id] #Create purchase order
+    # @po_vendor = params[:po_vendor]
+    # @amount = params[:amount]
 
-    raise StandardError
-  rescue
-    flash[:error]= "you got an error!"
-    render :new
+    data = params.permit(:vendor_check_box, :vendor_name, :po_check_box :project_id, :po_vendor, :po_line_amount).to_h
+    ErpSeederService.new.run(data.symbolize_keys)
 
     # client = Procore::ApiClient.new
     # if @name
