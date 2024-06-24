@@ -23,5 +23,9 @@ module ProcoreApiRailsOnly
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config_for(:application).each do |key, value|
+      config.send("#{key}=", value)
+    end
   end
 end

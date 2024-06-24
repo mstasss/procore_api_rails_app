@@ -1,22 +1,21 @@
 module Procore
   class ApiClient
-    # Service Account Credentials
-    # SA_CLIENT_ID = ENV['SA_CLIENT_ID']
-    # SA_CLIENT_SECRET = ENV['SA_CLIENT_SECRET']
-    SA_CLIENT_ID="672393d553d917cd401af97d43bfb34ac356575aed2ff99d5eb2017319f81a2b"
-    SA_CLIENT_SECRET="7d74b89d4fab3ad5e919985409cf63441ce72b3acf9730bca0a513f0aef75654"
-    COMPANY_ID=4264590
-
-    attr_reader :company_id
-
     # OAuth URL
     OAUTH_URL = 'https://sandbox.procore.com/oauth/token'
 
     BASE_API_URL = 'https://sandbox.procore.com/rest/'
     DEFAULT_API_VERSION = 'v1.0'
 
-    def initialize(company_id=COMPANY_ID)
+    attr_reader :company_id
+
+    def initialize(company_id:, sa_client_id:, sa_client_secret:)
       @company_id = company_id
+      @sa_client_id = sa_client_id
+      @sa_client_secret = sa_client_secret
+    end
+
+    def me
+      list('me')
     end
 
     def list_projects
@@ -24,9 +23,8 @@ module Procore
     end
 
     def list_vendors
-      list('vendors',company_id: company_id)
+      list('vendors', company_id: company_id)
     end
-
 
     def create_vendor(name)
       create('vendors', { name: name, company_id: company_id })
@@ -64,10 +62,11 @@ module Procore
     #
 
     def list_cost_codes(project_id=117418)
-      list('cost_codes',project_id: project_id)
+      list('cost_codes', project_id: project_id)
     end
+
     # origin code
-    def create_purchase_order(title,amount,cost_code_id=6112963, project_id=117418, vendor_id=2651489)
+    def create_purchase_order(title, amount, cost_code_id=6112963, project_id=117418, vendor_id=2651489)
       response = create('purchase_order_contracts', project_id: project_id, company_id: company_id,
         purchase_order_contract: {
           vendor_id: vendor_id,
@@ -75,7 +74,7 @@ module Procore
         }
       )
       po_id = response["id"]
-      create_purchase_order_contract_line_item(amount,cost_code_id,po_id,project_id)
+      create_purchase_order_contract_line_item(amount, cost_code_id, po_id, project_id)
     end
 
     #ΤΟ ADD: line items/cost codes, title
@@ -178,8 +177,8 @@ module Procore
         OAUTH_URL,
         {
           grant_type: 'client_credentials',
-          client_id: SA_CLIENT_ID,
-          client_secret: SA_CLIENT_SECRET
+          client_id: @sa_client_id,
+          client_secret: @sa_client_secret
         },
         {
           'Procore-Company-Id' => @company_id

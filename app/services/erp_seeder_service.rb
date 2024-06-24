@@ -15,13 +15,12 @@ class ErpSeederService
     end
 
     def create_po
-        client = Procore::ApiClient.new
-        response = client.create_purchase_order(@project_id,@vendor).with_indifferent_access
+        response = api_client.create_purchase_order(@project_id, @vendor).with_indifferent_access
         @purchase_order = PurchaseOrder.new(name: response["name"])
     end
 
-
     def api_client
         #lazy initialize for api client apiclient.new, store api client in variable
+        @api_client ||= Procore::ApiClient.new
     end
 end
