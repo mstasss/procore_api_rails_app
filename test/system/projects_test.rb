@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class ProjectsTest < ApplicationSystemTestCase
   setup do
-    @project = projects(:one)
+    @access_token = "access_token"
   end
 
   test "visiting the index" do

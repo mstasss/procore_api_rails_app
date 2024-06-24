@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root to: 'home#show'
+  get 'home/show'
 
   namespace :session do
     resource :oauth, only: %i[new destroy], controller: 'oauth' do

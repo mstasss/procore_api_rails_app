@@ -7,7 +7,7 @@ class HomeTest < ApplicationSystemTestCase
   end
 
   test "visiting home" do
-    visit home_url
+    visit root_url
     assert_selector 'a', text: 'Sign in with Procore'
   end
 end

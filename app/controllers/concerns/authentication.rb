@@ -1,6 +1,10 @@
 module Authentication
   extend ActiveSupport::Concern
 
+  def authenticate_user!
+    redirect_to new_session_oauth_path unless signed_in?
+  end
+
   def oauth_client
     @oauth_client ||= OAuth2::Client.new(
       Rails.application.credentials.oauth_client_id,
