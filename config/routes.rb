@@ -14,7 +14,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :projects, only: %i[index show] do
-    resource :seed, only: %i[new create]
-  end
+  resources :projects, only: %i[index show edit update]
 end

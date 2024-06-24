@@ -10,16 +10,6 @@ class ProjectsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Projects"
   end
 
-  test "should create project" do
-    visit projects_url
-    click_on "New project"
-
-    click_on "Create Project"
-
-    assert_text "Project was successfully created"
-    click_on "Back"
-  end
-
   test "should update Project" do
     visit project_url(@project)
     click_on "Edit this project", match: :first
@@ -28,12 +18,5 @@ class ProjectsTest < ApplicationSystemTestCase
 
     assert_text "Project was successfully updated"
     click_on "Back"
-  end
-
-  test "should destroy Project" do
-    visit project_url(@project)
-    click_on "Destroy this project", match: :first
-
-    assert_text "Project was successfully destroyed"
   end
 end

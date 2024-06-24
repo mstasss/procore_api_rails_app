@@ -26,6 +26,6 @@ module Authentication
   end
 
   def signed_in?
-    !session[:access_token].nil?
+    session[:access_token].present?
   end
 end
