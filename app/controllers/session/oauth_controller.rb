@@ -21,9 +21,8 @@ module Session
 
     # get '/refresh' do
     #   new_token = access_token.refresh!
-    #   session[:access_token]  = new_token.token
-    #   session[:refresh_token] = new_token.refresh_token
-    #   redirect '/'
+    #   sign_in(new_token)
+    #   redirect_to projects_path
     # end
   end
 end

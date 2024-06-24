@@ -1,3 +1,5 @@
+
+
 <%= form_with(model: project) do |form| %>
   <% if project.errors.any? %>
     <div style="color: red">
@@ -10,8 +12,42 @@
       </ul>
     </div>
   <% end %>
+<% end %>
 
+
+
+
+<%= form_with url: "/projects/#{project_external_id}", method: :patch do |form| %>
+  <% if flash[:error].present? %>
+    <div style="color: red">
+      <h2><%= flash[:error] %></h2>
+    </div>
+  <% end %>
+
+  <%= form.check_box :make_vendor %>
+  <%= form.label :make_vendor_yes, "Create New Vendor" %>
+  <input name="vendor_name" type="text" placeholder="enter vendor name" />
+  <br>
+  <br>
+  <%= form.check_box :make_po %>
+  <%= form.label :make_po_yes, "Create Purchase Order" %>
+  <h3> Create Purchase Order </h3>
+
+  <h3> Project ID </h3>
+  <input name="project_id" type="text" placeholder="ID #" />
+
+  <h3>Purchase Order Vendor </h3>
+  <input name="po_vendor" type="text" placeholder="Vendor Name" />
+
+  <h3> Amount </h3>
+  <input name="po_line_amount" placeholder="Amount" />
+  <br>
+  <br>
   <div>
     <%= form.submit %>
   </div>
 <% end %>
+    
+
+
+
