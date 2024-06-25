@@ -1,23 +1,4 @@
-
-
-<%= form_with(model: project) do |form| %>
-  <% if project.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
-
-      <ul>
-        <% project.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<% end %>
-
-
-
-
-<%= form_with url: "/projects/#{project_external_id}", method: :patch do |form| %>
+<%= form_with(url: "/projects/#{@project[:id]}", method: :patch) do |form| %>
   <% if flash[:error].present? %>
     <div style="color: red">
       <h2><%= flash[:error] %></h2>
@@ -27,8 +8,10 @@
   <%= form.check_box :make_vendor %>
   <%= form.label :make_vendor_yes, "Create New Vendor" %>
   <input name="vendor_name" type="text" placeholder="enter vendor name" />
+
   <br>
   <br>
+
   <%= form.check_box :make_po %>
   <%= form.label :make_po_yes, "Create Purchase Order" %>
   <h3> Create Purchase Order </h3>
@@ -47,7 +30,3 @@
     <%= form.submit %>
   </div>
 <% end %>
-    
-
-
-

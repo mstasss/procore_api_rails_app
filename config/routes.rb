@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root to: 'home#show'
-  get 'home/show'
+  resource :home, only: %i[show], controller: 'home', path: '/'
 
   namespace :session do
     resource :oauth, only: %i[new destroy], controller: 'oauth' do
@@ -15,5 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :projects, only: %i[index show edit update]
+  resources :companies, only: %i[index show] do
+    resources :projects, only: %i[show edit update]
+  end
 end

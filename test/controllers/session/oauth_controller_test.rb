@@ -17,17 +17,15 @@ class Session::OauthControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal('fake_access_token', session[:access_token])
     assert_requested req_stub, times: 1
-    assert_redirected_to projects_url
+    assert_redirected_to companies_url
   end
 
   test "should not create session" do
-    req_stub = stub_request(:any, "#{Rails.configuration.procore_url}/oauth/token").to_return(status: 401, body: { error: 'rejected' }.to_json, headers: { content_type: 'application/json' })
+    req_stub = stub_request(:any, "#{Rails.configuration.procore_url}/oauth/token").to_return(status: 401, body: { error: 'Invalid Token' }.to_json, headers: { content_type: 'application/json' })
 
-    assert_raise(OAuth2::Error, 'rejected') do
-      get callback_session_oauth_url, params: { code: 'fake_code' }
-      assert_redirected_to projects_url
-      assert_nil(session[:access_token])
-    end
+    get callback_session_oauth_url, params: { code: 'fake_code' }
+    assert_redirected_to home_url
+    assert_nil(session[:access_token])
 
     assert_requested req_stub, times: 1
   end
@@ -38,7 +36,7 @@ class Session::OauthControllerTest < ActionDispatch::IntegrationTest
     get new_session_oauth_url
 
     assert_not_requested :any, "#{Rails.configuration.procore_url}/oauth/authorize"
-    assert_redirected_to projects_url
+    assert_redirected_to companies_url
   end
 
   # test "should update session" do

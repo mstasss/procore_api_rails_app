@@ -1,33 +1,80 @@
 module Procore
   class ApiClient
-    # OAuth URL
-    OAUTH_URL = 'https://sandbox.procore.com/oauth/token'
-
-    BASE_API_URL = 'https://sandbox.procore.com/rest/'
     DEFAULT_API_VERSION = 'v1.0'
 
     attr_reader :company_id
+    attr_accessor :access_token
 
-    def initialize(company_id:, sa_client_id:, sa_client_secret:)
+    def initialize(company_id:, access_token:, before_retry: nil)
       @company_id = company_id
-      @sa_client_id = sa_client_id
-      @sa_client_secret = sa_client_secret
+      @access_token = access_token
+      @before_retry = before_retry
     end
 
-    def me
+    # https://developers.procore.com/reference/rest/v1/me?version=1.0
+    def list_me
       list('me')
     end
 
-    def list_projects
-      list('projects')
+    # https://developers.procore.com/reference/rest/v1/companies?version=1.0
+    def list_companies
+      list('companies')
     end
 
+    # https://developers.procore.com/reference/rest/v1/projects?version=1.1
+    def list_projects(**options)
+      list('projects', company_id: company_id, **options)
+    end
+
+    # Alternate to above
+    # https://developers.procore.com/reference/rest/v1/company-projects?version=1.0
+    # def list_projects
+    #   list("companies/#{company_id}/projects")
+    # end
+
+    # https://developers.procore.com/reference/rest/v1/project-vendors?version=1.1
     def list_vendors
       list('vendors', company_id: company_id)
     end
 
     def create_vendor(name)
       create('vendors', { name: name, company_id: company_id })
+    end
+
+    # https://developers.procore.com/reference/rest/v1/cost-codes?version=1.0
+    def list_cost_codes(project_id)
+      list('cost_codes', project_id: project_id)
+    end
+
+    # https://developers.procore.com/reference/rest/v1/purchase-order-contracts?version=1.0
+    def list_purchase_order(project_id)
+      list('purchase_order_contracts', project_id: project_id)
+    end
+
+    def create_purchase_order(title, project_id, vendor_id)
+      create(
+        'purchase_order_contracts',
+        project_id: project_id,
+        company_id: company_id,
+        purchase_order_contract: {
+          vendor_id: vendor_id,
+          title: title
+        }
+      )
+    end
+
+    # Purchase Order Contract Line Items
+    # https://developers.procore.com/reference/rest/v1/purchase-order-contract-line-items?version=1.0#create-purchase-order-contract-line-item
+    # POST /rest/v1.0/purchase_order/{purchase_order_contract_id}/line_items
+    def create_purchase_order_contract_line_item (amount,cost_code_id,po_id,project_id)
+      create(
+        "purchase_order_contracts/#{po_id}/line_items",
+        project_id: project_id,
+        line_item: {
+          amount: amount,
+          cost_code_id: cost_code_id
+        }
+      )
     end
 
     # Commitments (purchase order)
@@ -42,56 +89,6 @@ module Procore
     # GET /rest/v1.0/work_order_contracts
     def list_work_order_contracts
       list('work_order_contracts')
-    end
-
-    # Purchase Order Contracts
-    # https://developers.procore.com/reference/rest/v1/purchase-order-contracts?version=1.0
-    # GET /rest/v1.0/purchase_order
-    def list_purchase_order(project_id)
-      list('purchase_order_contracts', project_id: project_id)
-    end
-
-    # def list(endpoint, **query_params)
-    #   url = build_url(endpoint)
-    #   http_client.get(url, query_params)
-    # end
-
-    #PROJECT ID: 117418
-    #VENDOR ID: 2651489
-    #
-    #
-
-    def list_cost_codes(project_id=117418)
-      list('cost_codes', project_id: project_id)
-    end
-
-    # origin code
-    def create_purchase_order(title, amount, cost_code_id=6112963, project_id=117418, vendor_id=2651489)
-      response = create('purchase_order_contracts', project_id: project_id, company_id: company_id,
-        purchase_order_contract: {
-          vendor_id: vendor_id,
-          title: title
-        }
-      )
-      po_id = response["id"]
-      create_purchase_order_contract_line_item(amount, cost_code_id, po_id, project_id)
-    end
-
-    #ΤΟ ADD: line items/cost codes, title
-
-    # Purchase Order Contract Line Items
-    # https://developers.procore.com/reference/rest/v1/purchase-order-contract-line-items?version=1.0#create-purchase-order-contract-line-item
-    # POST /rest/v1.0/purchase_order/{purchase_order_contract_id}/line_items
-
-    def create_purchase_order_contract_line_item (amount,cost_code_id,po_id,project_id)
-      create(
-        "purchase_order_contracts/#{po_id}/line_items",
-        project_id: project_id,
-        line_item: {
-          amount: amount,
-          cost_code_id: cost_code_id
-        }
-      )
     end
 
     # Commitment Change Orders
@@ -115,25 +112,26 @@ module Procore
     # filters[created_at]     string          Return item(s) created within the specified ISO 8601 datetime range.
     # filters[updated_at]     string          Return item(s) last updated within the specified ISO 8601 datetime range.
     # filters[origin_id]      string          Origin ID. Returns item(s) with the specified Origin ID.
-
     def list_requisitions(project_id:, page: 1, per_page: 100, filters: {})
-      list('requisitions', {
+      list(
+        'requisitions',
         project_id: project_id,
         page: page,
         per_page: per_page,
         filters: filters
-      })
+      )
     end
 
     def create_requisition(project_id:, commitment_id:, period_id:, origin_id:)
-      create('requisitions', {
+      create(
+        'requisitions',
         project_id: project_id,
         requisition: {
           commitment_id: commitment_id,
           period_id: period_id,
           origin_id: origin_id,
         }
-      })
+      )
     end
 
     # Prime Contracts
@@ -160,35 +158,44 @@ module Procore
     def list_prime_change_orders(project_id:, **options)
     end
 
-    def list(endpoint, **query_params)
-      url = build_url(endpoint)
-      http_client.get(url, query_params)
+    def list(endpoint, api_version: DEFAULT_API_VERSION, **query_params)
+      request(
+        :get,
+        endpoint,
+        params: query_params,
+        api_version: api_version
+      )
     end
 
-    def create(endpoint, body)
-      url = build_url(endpoint)
-      http_client.post(url, body)
+    def create(endpoint, body, api_version: DEFAULT_API_VERSION)
+      request(
+        :post,
+        endpoint,
+        body: body,
+        api_version: api_version
+      )
     end
 
     private
 
-    def http_client
-      @http_client ||= HttpClient.new(
-        OAUTH_URL,
-        {
-          grant_type: 'client_credentials',
-          client_id: @sa_client_id,
-          client_secret: @sa_client_secret
-        },
-        {
-          'Procore-Company-Id' => @company_id
-        }
-      )
+    def request(method, endpoint, api_version: DEFAULT_API_VERSION, **options)
+      path = "/rest/#{api_version}/#{endpoint}".squeeze('/')
+      options[:headers] = { 'Procore-Company-Id' => @company_id }
+
+      response = with_retry do
+        @access_token.request(method, path, options)
+      end
+
+      JSON.parse(response.body)
     end
 
-    def build_url(endpoint, base_url: BASE_API_URL, api_version: DEFAULT_API_VERSION)
-      path = "#{api_version}/#{endpoint}"
-      "#{base_url.chomp('/')}/#{path.squeeze('/')}"
+    def with_retry
+      yield
+    rescue OAuth2::Error => e
+      raise unless e.response.status == 401
+
+      @before_retry&.call(self)
+      yield
     end
   end
 end

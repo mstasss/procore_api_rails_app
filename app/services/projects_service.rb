@@ -1,5 +1,21 @@
 class ProjectsService
-    def seed_project(data={})
+    attr_reader :api_client
+
+    def initialize(api_client)
+        @api_client = api_client
+    end
+
+    def get_all_projects
+        response = api_client.list_projects
+        response.map(&:symbolize_keys)
+    end
+
+    def get_one_project(project_id)
+        response = api_client.list_projects(filters: { id: project_id })
+        response.sole.symbolize_keys
+    end
+
+    def seed_project(data = {})
         data[:vendor_check_box] ||= true #should remove these once checkboxes work
         data[:po_check_box] ||= true
 
@@ -17,10 +33,5 @@ class ProjectsService
     def create_po
         response = api_client.create_purchase_order(@project_id, @vendor).with_indifferent_access
         @purchase_order = PurchaseOrder.new(name: response["name"])
-    end
-
-    def api_client
-        #lazy initialize for api client apiclient.new, store api client in variable
-        @api_client ||= Procore::ApiClient.new
     end
 end

@@ -10,26 +10,24 @@ module Session
 
     def create
       new_token = oauth_client.auth_code.get_token(params[:code], redirect_uri: callback_session_oauth_url)
-      sign_in(new_token)
-      redirect_to projects_path
+      sign_in!(new_token)
+      redirect_to companies_path
     end
 
-    # get '/refresh' do
     # def update
-    #   new_token = access_token.refresh!
-    #   sign_in(new_token)
-    #   redirect_to projects_path
+    #   refresh_token!
+    #   redirect_to some_path
     # end
 
     def destroy
-      session[:access_token] = nil
+      sign_out!
       redirect_to root_path
     end
 
     private
 
     def redirect_if_signed_in
-      redirect_to projects_path if signed_in?
+      redirect_to companies_path if signed_in?
     end
   end
 end
