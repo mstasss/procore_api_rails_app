@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project
-  
+
   def show
   end
 
@@ -16,6 +16,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def current_company_id
+    params[:company_id]
+  end
 
   def project_params
     params.require(:project).permit(
@@ -34,13 +38,5 @@ class ProjectsController < ApplicationController
 
   def projects_service
     @projects_service ||= ProjectsService.new(procore_api_client)
-  end
-
-  def procore_api_client
-    @procore_api_client ||= Procore::ApiClient.new(
-      company_id: params[:company_id],
-      access_token: access_token,
-      before_retry: ->(client) { client.access_token = refresh_token! }
-    )
   end
 end

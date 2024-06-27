@@ -5,10 +5,10 @@ module Procore
     attr_reader :company_id
     attr_accessor :access_token
 
-    def initialize(company_id:, access_token:, before_retry: nil)
+    def initialize(company_id:, access_token:, refresh_token:)
       @company_id = company_id
       @access_token = access_token
-      @before_retry = before_retry
+      @refresh_token = refresh_token
     end
 
     # https://developers.procore.com/reference/rest/v1/me?version=1.0
@@ -194,7 +194,7 @@ module Procore
     rescue OAuth2::Error => e
       raise unless e.response.status == 401
 
-      @before_retry&.call(self)
+      @access_token = @refresh_token.call
       yield
     end
   end

@@ -1,6 +1,8 @@
 module Authentication
   extend ActiveSupport::Concern
 
+  private
+
   def authenticate_user!
     redirect_to home_path unless signed_in?
     refresh_token! if access_token.expired? || access_token.expires_at < Time.now.to_i + 5.seconds
@@ -36,11 +38,6 @@ module Authentication
     access_token
   end
 
-  def refresh_token!
-    new_token = access_token.refresh!
-    sign_in!(new_token)
-  end
-
   def sign_out!
     session.delete(:access_token)
     session.delete(:refresh_token)
@@ -49,16 +46,16 @@ module Authentication
     @access_token = nil
   end
 
+  def refresh_token!
+    new_token = access_token.refresh!
+    sign_in!(new_token)
+  end
+
   def signed_in?
     session[:access_token].present?
   end
 
-  def signed_in_as
-    session[:signed_in_as] ||= Procore::ApiClient.new(company_id: nil, access_token: access_token).list_me
-  end
-
   included do
     helper_method :signed_in?
-    helper_method :signed_in_as
   end
 end
