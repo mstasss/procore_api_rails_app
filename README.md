@@ -1,6 +1,8 @@
 # README
 
-#view live on heroku: https://procore-api-rails-66f53fd7d13d.herokuapp.com/
+## Live URL
+
+https://procore-api-rails-66f53fd7d13d.herokuapp.com/
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
@@ -28,5 +30,3 @@ Things you may want to cover:
 'rails s' to start
 'rails c' to start console mode (Not localhost)
 'code .' opens current directory in default text editor
-
-http://localhost:3000/seeds/new

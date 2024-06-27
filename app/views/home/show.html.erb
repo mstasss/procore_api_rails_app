@@ -1,0 +1,11 @@
+<% if flash[:error] %>
+  <div style="color: red">
+    <h2><%= flash[:error] %></h2>
+  </div>
+<% end %>
+
+<% if signed_in? %>
+  <%= link_to 'Procore Companies I can access', companies_path %>
+<% else %>
+  <%= link_to 'Sign in with Procore', new_session_oauth_path %>
+<% end %>

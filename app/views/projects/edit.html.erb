@@ -1,0 +1,12 @@
+<h1> Procore Project Data Generator </h1>
+
+<h2><%= @project[:name] %> (project#<%= @project[:id] %>)</h2>
+
+<%= render "form", project: @project %>
+
+<br>
+
+<div>
+  <%= link_to "Show this project", company_project_path(@project.dig(:company, 'id'), @project[:id]) %> |
+  <%= link_to "Back to company", company_path(@project.dig(:company, 'id')) %>
+</div>

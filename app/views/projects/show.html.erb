@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= @project[:name] %> (project#<%= @project[:id] %>)</h1>
+
+<%= render 'project', project: @project %>
+
+<br>
+
+<div>
+  <%= link_to "Seed this project", edit_company_project_path(@project.dig(:company, 'id'), @project[:id]) %> |
+  <%= link_to "Back to company", company_path(@project.dig(:company, 'id')) %>
+</div>

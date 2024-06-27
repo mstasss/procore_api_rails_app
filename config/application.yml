@@ -1,0 +1,10 @@
+development:
+  procore_url: https://sandbox.procore.com
+  default_host: http://localhost
+
+test:
+  procore_url: https://sandbox.procore.com
+  default_host: http://localhost
+
+production:
+  procore_url: https://app.procore.com

@@ -10,6 +10,11 @@
   </head>
 
   <body>
+    <% if signed_in? %>
+      <code><%= signed_in_as %></code>
+      <%= button_to 'Sign out', session_oauth_path, method: :delete %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
