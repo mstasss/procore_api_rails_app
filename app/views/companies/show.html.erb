@@ -1,0 +1,8 @@
+<h1>Company ID#<%= @company[:id] %></h1>
+
+<h2>Projects</h2>
+<ul>
+  <% @projects.each do |project| %>
+    <li><%= link_to project[:name], company_project_path(@company[:id], project[:id]) %></li>
+  <% end %>
+</ul>

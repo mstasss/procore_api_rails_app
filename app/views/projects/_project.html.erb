@@ -1,0 +1,8 @@
+<div id="<%= project[:id] %>">
+  <% project.each_pair do |key, val| %>
+    <div>
+      <strong><%= key %>:</strong>
+      <%= val %>
+    </div>
+  <% end %>
+</div>
